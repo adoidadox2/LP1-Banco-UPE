@@ -1,43 +1,54 @@
 #include <stdio.h>
+#include <stdlib.h>   
 #include <string.h>
-#define max 100
+#define MAX 100       
 #define SACAR(a,b) ((a)-(b))
 
-typedef struct{	char titular[100];
-				int conta;
-				float saldo;
-				unsigned int senha;
-				int ns;
-				int np;
-				int nd;
-				
-				struct{	float deposito[max];
-						char datadep[max][12];
-				}dep;
-				struct{	float saque[max];
-						char datasaq[max][12];
-						int barras[max];
-						char datapag[max][12];
-						float pag[max];
-				}saq;
+typedef struct{
+    char titular[100];
+    int conta;
+    float saldo;
+    unsigned int senha;
+    int ns;
+    int np;
+    int nd;
+    
+    struct{	
+        float deposito[MAX];
+        char datadep[MAX][12];
+    }dep;
+    struct{	
+        float saque[MAX];
+        char datasaq[MAX][12];
+        int barras[MAX];
+        char datapag[MAX][12];
+        float pag[MAX];
+    }saq;
 				
 }bancarios;
-bancarios dados_bancarios[max];
 
-int cadastrar(bancarios *x,int cad);
+bancarios dados_bancarios[MAX];
+
+int cadastrar(bancarios *x,int cad); 
 void pesquisar(int cad);
 void extrato(int cad);
 void listar(int cad);
-
+int menu();
 void salvar_arq(char txt[],int n);
 int carregar_arq(char txt[]);
 
-main(){
+void excluir();
+
+int comparaNome(const void *a, const void *b);
+
+int main(int argc, char *argv[]){  
 	int op,x,cad=0,k,w,numero_conta,numero_senha,m,indice_saque=0,c=0,contador=0,contador_dep=0,indice_dep=0,contador_pag=0,indice_pag=0,numbol;
+	
 	float valor_saque,receita=0,valor_dep,valor_pag;
 	
-	for(k=0;k<max;k++){
-		for(w=0;w<max;w++){
+	
+	for(k=0;k<MAX;k++){
+		for(w=0;w<MAX;w++){
 			dados_bancarios[k].conta=0;
 			dados_bancarios[k].saldo=0;
 			dados_bancarios[k].senha=0;
@@ -51,7 +62,7 @@ main(){
 		}
 	}
 	
-	cad=carregar_arq("Clientes.txt");
+	cad = carregar_arq("Clientes.txt");
 	
 	do{
 		op=menu();
@@ -59,6 +70,7 @@ main(){
 			case 1:{
 				cad=cadastrar(&dados_bancarios[cad],cad);
 				cad++;
+				salvar_arq("Clientes.txt",cad);
 				break;
 			}//fim case 1
 			case 2:{
@@ -98,6 +110,7 @@ main(){
 								printf("SAQUE CONCLUIDO\n");
 								dados_bancarios[indice_saque].ns++;
 								c=0;
+								salvar_arq("Clientes.txt",cad);
 								break;
 							}
 							else{
@@ -149,6 +162,7 @@ main(){
 								printf("DEPOSITO CONCLUIDO\n");
 								dados_bancarios[indice_dep].nd++;
 								c=0;
+								salvar_arq("Clientes.txt",cad);
 								break;
 							}
 							else{
@@ -186,7 +200,7 @@ main(){
 						scanf("%i",&numero_senha);
 						if(dados_bancarios[indice_pag].senha==numero_senha){
 							c++;
-							printf("Insira nº do codigo de barras: ");
+							printf("Insira nÂº do codigo de barras: ");
 							scanf("%i",&numbol);
 							printf("Insira valor do boleto: ");
 							scanf("%f",&valor_pag);
@@ -207,6 +221,7 @@ main(){
 								printf("PAGAMENTO CONCLUIDO\n");
 								dados_bancarios[indice_pag].np++;
 								c=0;
+								salvar_arq("Clientes.txt",cad);
 								break;
 							}
 							else{
@@ -234,23 +249,27 @@ main(){
 				listar(cad);
 				break;
 			}
-			case 8:{
-				
-				salvar_arq("Clientes.txt",cad);
-				
-				exit(0);
+			case 8:{	
+					excluir(cad);
+                	cad=carregar_arq("Clientes.txt");
 				break;
 			}
+			case 9:{
+				
+                 break;
+                 }
+                 
 			default:{
 				printf("OPCAO INVALIDA\n");
 				break;
 			}
 		}
-	}
-	while(x!=8);
+	}while(op!=9);
+
 	system("pause");
-	
+	return 0;
 }
+
 int menu(){
 	int op;
 	printf("\xC9\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBB");
@@ -258,51 +277,59 @@ int menu(){
 	printf("\n\xBA feito em C.                    \xBA");
 	printf("\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
 	
-	printf("1- Cadastrar\n2- Pesquisar\n3- Sacar\n4- Depositar\n5- Pagar\n6- Extrato\n7- Listar\n8- Sair\n\n--> ");
+	printf("1- Cadastrar\n2- Pesquisar\n3- Sacar\n4- Depositar\n5- Pagar\n6- Extrato\n7- Listar\n8- Deletar Conta\n9- Sair\n\n--> ");
 	scanf("%i",&op);
 	
 	return op;
-	}
+}
 
 int cadastrar(bancarios *x, int cad){
-	int y=0,erro_cadc=0;
+	int y = 0, erro_cadc = 0;
+
 	printf("=== Cadastrar ===\n");
-				while(x!=0){
-				printf("Nome do titular: ");
-				fflush(stdin);
-				gets(x->titular);
-				printf("Insira um numero de conta(apenas numeros): ");
-				scanf("%i",&x->conta);
-				
-				for(y=0;y<cad;y++){
-					if(dados_bancarios[cad].conta==dados_bancarios[y].conta){
-						erro_cadc++;
-					}
-				}
-				if(erro_cadc!=0){
-					printf("Numero de conta indisponivel\n");
-						cad--;
-						break;
-				}
-				else{
-						printf("Insira uma senha(apenas numeros): ");
-						scanf("%i",&x->senha);
-				}
-				printf("Cadastro realizado com sucesso!\n");
-				break;
-			}
-			return cad;
+    while(x!=0){
+        printf("Nome do titular: ");
+        fflush(stdin);
+        gets(x->titular);
+        printf("Insira um numero de conta(apenas numeros): ");
+        scanf("%i",&x->conta);
+        
+        for(y=0;y<cad;y++){
+            if(dados_bancarios[cad].conta == dados_bancarios[y].conta){   
+                erro_cadc++;
+            }
+        }
+        if(erro_cadc!=0){
+            printf("Numero de conta indisponivel\n");
+            cad--;
+            break;
+        }else{
+            printf("Insira uma senha(apenas numeros): ");
+            scanf("%i",&x->senha);
+        }
+
+        printf("Cadastro realizado com sucesso!\n");
+        break;
+    }
+    return cad;
 }
 void pesquisar(int cad){
-	int num=0,i,indice=0,chave,x;
+	int num=0,i,indice=0,chave,x,y,ok=0;
 	printf("Insira chave de acesso para prosseguir: ");
 	scanf("%i",&chave);
-	if(chave==777){
+	
+    if(chave==777){
 	
 		printf("Insira o numero da conta: ");
 		scanf("%i",&num);
 		
-		for(i=0;i<=cad;i++){
+		for(y=0;y<cad;y++){
+            if(num == dados_bancarios[y].conta){   
+              ok++;
+            }
+        }
+        if(ok==1){
+            for(i=0;i<cad;i++){
 			if(dados_bancarios[i].conta==num){
 				indice=i;
 			}
@@ -337,11 +364,17 @@ void pesquisar(int cad){
 			}
 		}
 		printf("\nSaldo: %.2f\n",dados_bancarios[indice].saldo);
-	}
-	else{
-		printf("ACESSO NEGADO\n");
-	}
+	}else{
+    printf("NUMERO DE CONTA INEXISTENTE\n");
+      }
+      
+  }
+  else{
+	    	printf("ACESSO NEGADO\n");
+        	}
+        	
 }
+
 void extrato(int cad){
 	int m=0,i,indice=0,contador=0,num,senha,x;
 	
@@ -394,13 +427,18 @@ void extrato(int cad){
 			printf("CONTA INCORRETA\n");
 		}	
 }
+
 void listar(int cad){
 	int chave,x,cont=0;
 	printf("Insira chave de acesso para prosseguir: ");
 	scanf("%i",&chave);
+
 	if(chave==777){
-		for(x=1;x<=cad;x++){
-			cont++;
+		
+		qsort(dados_bancarios,cad,sizeof(bancarios),comparaNome);
+		
+		for(x = 0; x < cad; x++){
+        	cont++;
 			printf("\nTitular: ");
 			puts(dados_bancarios[x].titular);
 			printf("Conta: %i\n",dados_bancarios[x].conta);
@@ -408,44 +446,85 @@ void listar(int cad){
 			printf("------------------------\n");
 		}
 		printf("Numero de contas cadastradas: %i\n",cont);
-	}
-	else{
+	}else{
 		printf("ACESSO NEGADO\n");
 	}
 }
 
-
 void salvar_arq(char txt[],int n){
-	int i;
+    
 	FILE *arq;
-	
-	arq=fopen(txt,"a+");
+	arq=fopen(txt,"w");
 	
 	if(arq==NULL){
 		printf("Impossivel abrir o arquivo\n");
 	}
 	
-	fwrite(&dados_bancarios,sizeof(bancarios),n,arq);
 	
+	fwrite(dados_bancarios,sizeof(bancarios),n,arq);  
+
 	fclose(arq);
 }
 
 int carregar_arq(char txt[]){
 	
-	FILE *arq;
-	int i=0;
 	int k=0;
 	
+    FILE *arq;
 	arq=fopen(txt,"a+");
 	
 	if(arq==NULL){
 		printf("IMPOSSIVEL ABRIR O ARQUIVO\n");
 	}
 	
-	while(fread(&dados_bancarios,sizeof(bancarios),1,arq)){
+	while(fread(&dados_bancarios[k],sizeof(bancarios),1,arq)){    
 		k++;
 	}
 	
 	fclose(arq);
 	return k;
+    }
+     
+ void excluir(int x){
+      
+      FILE *arq;
+	  
+	  int cont,i,indice,somador=0,chave;
+	  
+	printf("Insira chave de acesso para prosseguir: ");
+	scanf("%i",&chave);
+	
+    if(chave==777){
+	  
+	  printf("Insira numero da conta: ");
+	  scanf("%i",&cont);
+	  
+	  for(i=0;i<x;i++){
+	  	if(cont==dados_bancarios[i].conta){
+	  		indice=i;
+			somador++;
+		  }
+	  }
+	  if(somador==1){
+	  	arq=fopen("Clientes.txt","w");
+	  	dados_bancarios[indice]=dados_bancarios[x-1];
+	  	fwrite(dados_bancarios,sizeof(bancarios),(x-1),arq);
+	  	fclose(arq);
+	  	printf("CONTA APAGADA\n");
+	  }
+	  else{
+	  	printf("NUMERO DE CONTA INVALIDO\n");
+	  }
+	}
+	else{
+		printf("CHAVE DE ACESSO INVALIDA\n");
+	}
+}
+
+int comparaNome(const void *a, const void *b){
+	int r=strcmp((*(bancarios*)a).titular,(*(bancarios*)b).titular);
+	
+	if(r==0)return 0;
+	else if(r<0)return -1;
+	else return 1;
 }
