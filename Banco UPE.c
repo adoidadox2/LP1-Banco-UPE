@@ -47,7 +47,7 @@ int main(int argc, char *argv[]){
 	float valor_saque,receita=0,valor_dep,valor_pag;
 	
 	
-	for(k=0;k<MAX;k++){   /* zerando todos os componentes de todas as posições */
+	for(k=0;k<MAX;k++){   /* zerando todos os componentes de todas as posiÃ§Ãµes */
 		for(w=0;w<MAX;w++){
 			dados_bancarios[k].conta=0;
 			dados_bancarios[k].saldo=0;
@@ -65,19 +65,19 @@ int main(int argc, char *argv[]){
 	cad = carregar_arq("Clientes.txt"); // carregando os dados do arquivo, onde "cad" recebe o numero de clientes cadastrados
 	
 	do{
-		op=menu(); // "op" recebe a opção desejada no menu
+		op=menu(); // "op" recebe a opÃ§Ã£o desejada no menu
 		switch(op){
-			case 1:{ // Opção de cadastro
+			case 1:{ // OpÃ§Ã£o de cadastro
 				cad=cadastrar(&dados_bancarios[cad],cad); 
 				cad++;
-				salvar_arq("Clientes.txt",cad); // arquivo atualizado após cadastro
+				salvar_arq("Clientes.txt",cad); // arquivo atualizado apÃ³s cadastro
 				break;
 			}//fim case 1
-			case 2:{ // Opção de pesquisa
-				pesquisar(cad); // A função pesquisa um cliente específico 
+			case 2:{ // OpÃ§Ã£o de pesquisa
+				pesquisar(cad); // A funÃ§Ã£o pesquisa um cliente especÃ­fico 
 				break;
 			}//fim case 2
-			case 3:{ // Opção de saque
+			case 3:{ // OpÃ§Ã£o de saque
 				printf("Insira conta: ");
 				scanf("%i",&numero_conta);
 				
@@ -97,10 +97,10 @@ int main(int argc, char *argv[]){
 							scanf("%f",&valor_saque);
 					
 							receita=SACAR(dados_bancarios[indice_saque].saldo,valor_saque); // "receita" recebe o saldo atual menos o valor a ser sacado
-							if(receita>=0){ // verificando se o valor a ser sacado é menor ou igual ao saldo atual
+							if(receita>=0){ // verificando se o valor a ser sacado Ã© menor ou igual ao saldo atual
 								
 								dados_bancarios[indice_saque].saldo-=valor_saque; //descontando o valor da conta
-								while(dados_bancarios[indice_saque].saq.saque[c]!=0){ /*determinando qual indice da primeira posição do vetor que estiver vazia que armazenará o valor do saque*/
+								while(dados_bancarios[indice_saque].saq.saque[c]!=0){ /*determinando qual indice da primeira posiÃ§Ã£o do vetor que estiver vazia que armazenarÃ¡ o valor do saque*/
 									c++;
 								}
 								printf("Insira data[dd/mm/aaaa]: ");
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]){
 				}
 				break;
 			}//fim case 3
-			case 4:{ // Opção de depósito
+			case 4:{ // OpÃ§Ã£o de depÃ³sito
 				
 				printf("Insira conta: ");
 				scanf("%i",&numero_conta);
@@ -145,20 +145,20 @@ int main(int argc, char *argv[]){
 				if(contador_dep!=0){
 					printf("Insira senha: ");
 					scanf("%i",&numero_senha);
-						if(dados_bancarios[indice_dep].senha==numero_senha){ /*verificando se a senha está correta*/
+						if(dados_bancarios[indice_dep].senha==numero_senha){ /*verificando se a senha estÃ¡ correta*/
 							c++;
 							printf("Insira valor a ser depositado: ");
 							scanf("%f",&valor_dep);
-							if(valor_dep>0){ /*verificando se o valor a ser depositado é valido*/
+							if(valor_dep>0){ /*verificando se o valor a ser depositado Ã© valido*/
 								dados_bancarios[indice_dep].saldo+=valor_dep; // somando valor ao saldo
 								
-								while(dados_bancarios[indice_dep].dep.deposito[c]!=0){ /*determinando qual indice da primeira posição do vetor que estiver vazia que armazenará o valor do deposito*/
+								while(dados_bancarios[indice_dep].dep.deposito[c]!=0){ /*determinando qual indice da primeira posiÃ§Ã£o do vetor que estiver vazia que armazenarÃ¡ o valor do deposito*/
 									c++;
 								}
 								printf("Insira data[dd/mm/aaaa]: ");
 								fflush(stdin);
 								gets(dados_bancarios[indice_dep].dep.datadep[c]); /*salvando a data do deposito no mesmo indice do valor*/
-								dados_bancarios[indice_dep].dep.deposito[c]=valor_dep; /*salvando o valor do depósito*/
+								dados_bancarios[indice_dep].dep.deposito[c]=valor_dep; /*salvando o valor do depÃ³sito*/
 								printf("DEPOSITO CONCLUIDO\n");
 								dados_bancarios[indice_dep].nd++; //incrementando o numero de depositos realizados na conta
 								c=0; //zerando o contador para o proximo cliente
@@ -178,13 +178,13 @@ int main(int argc, char *argv[]){
 							break;
 						}
 					}
-					else{ //caso a conta não existir
+					else{ //caso a conta nÃ£o existir
 					printf("CONTA INCORRETA\n");
 					break;
 				}
 				break;
 			}//fim case 4
-			case 5:{ // Opção de Pagamento
+			case 5:{ // OpÃ§Ã£o de Pagamento
 				printf("Insira conta: ");
 				scanf("%i",&numero_conta);
 				
@@ -200,16 +200,16 @@ int main(int argc, char *argv[]){
 						scanf("%i",&numero_senha);
 						if(dados_bancarios[indice_pag].senha==numero_senha){ /* Verificando se a senha corresponde a senha do cliente */
 							c++;
-							printf("Insira nº do codigo de barras: ");
+							printf("Insira nÂº do codigo de barras: ");
 							scanf("%i",&numbol);
 							printf("Insira valor do boleto: ");
 							scanf("%f",&valor_pag);
 					
 							receita=SACAR(dados_bancarios[indice_pag].saldo,valor_pag); // "receita" recebe o saldo atual menos o valor a ser sacado
-							if(receita>=0){ // verificando se o valor a ser sacado é menor ou igual ao saldo atual
+							if(receita>=0){ // verificando se o valor a ser sacado Ã© menor ou igual ao saldo atual
 								
 								dados_bancarios[indice_pag].saldo-=valor_pag; //descontando o valor da conta
-								while(dados_bancarios[indice_pag].saq.pag[c]!=0){ /*determinando qual indice da primeira posição do vetor que estiver vazia que armazenará o valor do pagamento*/
+								while(dados_bancarios[indice_pag].saq.pag[c]!=0){ /*determinando qual indice da primeira posiÃ§Ã£o do vetor que estiver vazia que armazenarÃ¡ o valor do pagamento*/
 									c++;
 								}
 								
@@ -235,38 +235,38 @@ int main(int argc, char *argv[]){
 							break;
 						}
 					}
-				else{ //caso a conta não existir
+				else{ //caso a conta nÃ£o existir
 					printf("CONTA INCORRETA\n");
 					break;
 				}
 				break;
 			}//fim case 5
-			case 6:{ // Opção de Extrato
+			case 6:{ // OpÃ§Ã£o de Extrato
 				extrato(cad); 
 				break;
 			}
-			case 7:{ // Opção de Listagem
+			case 7:{ // OpÃ§Ã£o de Listagem
 				listar(cad);
 				break;
 			}
-			case 8:{ // Opção de Excluir Conta	
+			case 8:{ // OpÃ§Ã£o de Excluir Conta	
 					excluir(cad);
                 	cad=carregar_arq("Clientes.txt"); // atualizando arquivo
 				break;
 			}
-			case 9:{ // Opção de sair
+			case 9:{ // OpÃ§Ã£o de sair
 				     printf("Ate logo!\n");
                  break;
                  }
                  
-			default:{ // Caso seja digitada uma opção inexistente
+			default:{ // Caso seja digitada uma opÃ§Ã£o inexistente
 				printf("OPCAO INVALIDA\n");
 				break;
 			}
 		}
 	}while(op!=9);
 
-	system("pause"); // Pausa antes do programa fechar, caso não funcione, substitua por getchar();
+	system("pause"); // Pausa antes do programa fechar, caso nÃ£o funcione, substitua por getchar();
 	return 0;
 }
 
@@ -278,12 +278,12 @@ int menu(){
 	printf("\n\xC8\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xCD\xBC\n");
 	
 	printf("1- Cadastrar\n2- Pesquisar\n3- Sacar\n4- Depositar\n5- Pagar\n6- Extrato\n7- Listar\n8- Deletar Conta\n9- Sair\n\n--> ");
-	scanf("%i",&op); // recebe a opção desejada
+	scanf("%i",&op); // recebe a opÃ§Ã£o desejada
 	
 	return op;
 }
 
-int cadastrar(bancarios *x, int cad){ //ponteiro do tipo bancarios, inteiro "cad" que receberá o numero de cadastros
+int cadastrar(bancarios *x, int cad){ //ponteiro do tipo bancarios, inteiro "cad" que receberÃ¡ o numero de cadastros
 	int y = 0, erro_cadc = 0;
 
 	printf("=== Cadastrar ===\n");
@@ -294,7 +294,7 @@ int cadastrar(bancarios *x, int cad){ //ponteiro do tipo bancarios, inteiro "cad
         printf("Insira um numero de conta(apenas numeros): ");
         scanf("%i",&x->conta);
         
-        for(y=0;y<cad;y++){ // verificando se o numero da conta já está sendo usado
+        for(y=0;y<cad;y++){ // verificando se o numero da conta jÃ¡ estÃ¡ sendo usado
             if(dados_bancarios[cad].conta == dados_bancarios[y].conta){   
                 erro_cadc++;
             }
@@ -381,7 +381,7 @@ void extrato(int cad){
 	printf("Insira conta: ");
 	scanf("%i",&num);
 				
-	for(m=0;m<=cad;m++){ // verificando se a conta existe e qual sua posição no vetor
+	for(m=0;m<=cad;m++){ // verificando se a conta existe e qual sua posiÃ§Ã£o no vetor
 		if(dados_bancarios[m].conta==num){
 				indice=m;
 				contador++;
@@ -435,7 +435,7 @@ void listar(int cad){
 
 	if(chave==777){ // essa "chave" simboliza um "controle" apenas para pessoal autorizado
 		
-		qsort(dados_bancarios,cad,sizeof(bancarios),comparaNome); // função qsort que irá ordenar os clientes cadastrados por ordem alfabetica
+		qsort(dados_bancarios,cad,sizeof(bancarios),comparaNome); // funÃ§Ã£o qsort que irÃ¡ ordenar os clientes cadastrados por ordem alfabetica
 		
 		for(x = 0; x < cad; x++){ // mostra todos os nomes dos clientes cadastrados, seus numeros de conta e seu saldo
         	cont++;
@@ -451,12 +451,12 @@ void listar(int cad){
 	}
 }
 
-void salvar_arq(char txt[],int n){ // função que salva os dados do vetor no arquivo
+void salvar_arq(char txt[],int n){ // funÃ§Ã£o que salva os dados do vetor no arquivo
     
 	FILE *arq; // declarando ponteiro do tipo arquivo (FILE)
 	arq=fopen(txt,"w"); // criando/abrindo arquivo no modo "escrita" ( w sobrescreve dados )
 	
-	if(arq==NULL){ // caso ocorra algum erro na abertura/criação do arquivo
+	if(arq==NULL){ // caso ocorra algum erro na abertura/criaÃ§Ã£o do arquivo
 		printf("Impossivel abrir o arquivo\n");
 	}
 	
@@ -466,18 +466,18 @@ void salvar_arq(char txt[],int n){ // função que salva os dados do vetor no arqu
 	fclose(arq); // fechando arquivo
 }
 
-int carregar_arq(char txt[]){ // função para ler os dados salvos no arquivo
+int carregar_arq(char txt[]){ // funÃ§Ã£o para ler os dados salvos no arquivo
 	
 	int k=0;
 	
     FILE *arq; // declarando ponteiro do tipo arquivo (FILE)
 	arq=fopen(txt,"a+"); // criando/abrindo arquivo no modo "adicionar" (a+ adiciona dados ao arquivo)
 	
-	if(arq==NULL){ // caso ocorra algum erro na abertura/criação do arquivo
+	if(arq==NULL){ // caso ocorra algum erro na abertura/criaÃ§Ã£o do arquivo
 		printf("IMPOSSIVEL ABRIR O ARQUIVO\n");
 	}
 	
-	while(fread(&dados_bancarios[k],sizeof(bancarios),1,arq)){  // lendo os dados do arquivo (a cada posição do vetor "bancarios" lido, soma 1 no contador, que representa o numero de cadastramentos)  
+	while(fread(&dados_bancarios[k],sizeof(bancarios),1,arq)){  // lendo os dados do arquivo (a cada posiÃ§Ã£o do vetor "bancarios" lido, soma 1 no contador, que representa o numero de cadastramentos)  
 		k++;
 	}
 	
@@ -485,7 +485,7 @@ int carregar_arq(char txt[]){ // função para ler os dados salvos no arquivo
 	return k; // retornando numero de cadastrados
     }
      
- void excluir(int x){ // função para excluir cliente
+ void excluir(int x){ // funÃ§Ã£o para excluir cliente
       
       FILE *arq; // declarando ponteiro do tipo arquivo (FILE)
 	  
@@ -507,7 +507,7 @@ int carregar_arq(char txt[]){ // função para ler os dados salvos no arquivo
 	  }
 	  if(somador==1){ // caso a conta exista
 	  	arq=fopen("Clientes.txt","w"); // criando/abrindo arquivo no modo "escrita" ( w sobrescreve dados )
-	  	dados_bancarios[indice]=dados_bancarios[x-1]; // sobrescrevendo os dados da posição do vetor a ser deletado, com os dados existentes na ultima posição do vetor cadastrado
+	  	dados_bancarios[indice]=dados_bancarios[x-1]; // sobrescrevendo os dados da posiÃ§Ã£o do vetor a ser deletado, com os dados existentes na ultima posiÃ§Ã£o do vetor cadastrado
 	  	fwrite(dados_bancarios,sizeof(bancarios),(x-1),arq); // sobrescrevendo os dados no arquivo
 	  	fclose(arq); // fechando arquivo
 	  	printf("CONTA APAGADA\n");
@@ -521,10 +521,10 @@ int carregar_arq(char txt[]){ // função para ler os dados salvos no arquivo
 	}
 }
 
-int comparaNome(const void *a, const void *b){ // função que compara os nomes dos titulares das contas, essa função será utilizada como parâmetro da função "qsort"
-	int r=strcmp((*(bancarios*)a).titular,(*(bancarios*)b).titular);  // os ponteiros do tipo void serão convertidos em ponteiros do tipo "bancarios" (bancarios é o tipo da estrutura declarada no começo do programa)
-                                                                     // "r" receberá inteiro retornado da função strcmp, que irá comparar as duas strings correspondentes aos nomes dos titularesdas contas
+int comparaNome(const void *a, const void *b){ // funÃ§Ã£o que compara os nomes dos titulares das contas, essa funÃ§Ã£o serÃ¡ utilizada como parÃ¢metro da funÃ§Ã£o "qsort"
+	int r=strcmp((*(bancarios*)a).titular,(*(bancarios*)b).titular);  // os ponteiros do tipo void serÃ£o convertidos em ponteiros do tipo "bancarios" (bancarios Ã© o tipo da estrutura declarada no comeÃ§o do programa)
+                                                                     // "r" receberÃ¡ inteiro retornado da funÃ§Ã£o strcmp, que irÃ¡ comparar as duas strings correspondentes aos nomes dos titularesdas contas
 	if(r==0)return 0; //  caso o primeiro elemento for igual ao segundo elemento
-	else if(r<0)return -1; // caso o primeiro elemento dever vir antes do segundo elemento
-	else return 1; //  caso o primeiro elemento dever vir depois do sgeundo elemento
+	else if(r<0)return -1; // caso o primeiro elemento deva vir antes do segundo elemento
+	else return 1; //  caso o primeiro elemento deva vir depois do sgeundo elemento
 }
